@@ -29,8 +29,13 @@ export default function SignUpSuccessPage() {
                     <strong>Note:</strong> If you don&apos;t see the email, please check your spam folder.
                   </p>
                 </div>
-                <div className="text-center mt-4">
-                  <Link href="/auth/login" className="text-blue-600 underline underline-offset-4">
+                <div className="bg-green-50 p-4 rounded-lg mt-2">
+                  <p className="text-sm text-green-800">
+                    <strong>Next Step:</strong> After confirming your email, subscribe to get full access to E-Deck Estimator for $499/year.
+                  </p>
+                </div>
+                <div className="text-center mt-4 space-y-2">
+                  <Link href="/auth/login" className="block text-blue-600 underline underline-offset-4">
                     Return to Login
                   </Link>
                 </div>
