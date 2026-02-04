@@ -19,6 +19,14 @@ export interface AppConfig {
   }
 }
 
+// Unified pricing for unlimited access to both modes
+export const unlimitedPricing = {
+  name: "Unlimited Access",
+  price: 499,
+  billingCycle: "annual" as const,
+  description: "Full access to both Residential and Commercial modes",
+}
+
 // Default configurations for different modes
 export const modeConfigs: Record<EstimatorMode, AppConfig> = {
   residential: {
@@ -27,13 +35,13 @@ export const modeConfigs: Record<EstimatorMode, AppConfig> = {
       offlineCapabilities: true,
       photoGallery: true,
       visualization: true,
-      advancedReporting: false,
-      userAccounts: false,
-      teamCollaboration: false,
+      advancedReporting: true,
+      userAccounts: true,
+      teamCollaboration: true,
     },
     pricing: {
-      name: "Residential",
-      price: 99,
+      name: "Unlimited Access",
+      price: 499,
       billingCycle: "annual",
     },
   },
@@ -48,8 +56,8 @@ export const modeConfigs: Record<EstimatorMode, AppConfig> = {
       teamCollaboration: true,
     },
     pricing: {
-      name: "Commercial",
-      price: 199,
+      name: "Unlimited Access",
+      price: 499,
       billingCycle: "annual",
     },
   },

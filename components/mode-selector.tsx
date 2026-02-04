@@ -3,8 +3,8 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Check, Building, Home, ArrowLeft } from "lucide-react"
-import { type EstimatorMode, modeConfigs } from "@/types/app-config"
+import { Check, Building, Home, ArrowLeft, Star } from "lucide-react"
+import { type EstimatorMode, unlimitedPricing } from "@/types/app-config"
 
 interface ModeSelectorProps {
   onModeSelect: (mode: EstimatorMode) => void
@@ -28,8 +28,18 @@ export default function ModeSelector({ onModeSelect, onBack }: ModeSelectorProps
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-900 via-blue-700 to-blue-500 p-4">
       <Card className="w-full max-w-4xl">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold">Choose Your E-Deck Estimator Version</CardTitle>
-          <CardDescription>Select the version that best fits your business needs</CardDescription>
+          {/* Unified Pricing Banner */}
+          <div className="bg-gradient-to-r from-green-600 to-green-500 text-white rounded-lg p-4 mb-4 shadow-lg">
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <Star className="h-5 w-5 fill-yellow-300 text-yellow-300" />
+              <span className="font-bold text-lg">Unlimited Access</span>
+              <Star className="h-5 w-5 fill-yellow-300 text-yellow-300" />
+            </div>
+            <div className="text-4xl font-bold">${unlimitedPricing.price}<span className="text-lg font-normal">/year</span></div>
+            <p className="text-green-100 mt-1">Full access to BOTH Residential and Commercial modes</p>
+          </div>
+          <CardTitle className="text-2xl font-bold">Choose Your Starting Mode</CardTitle>
+          <CardDescription>Select the mode you want to start with - you can switch between modes anytime!</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid md:grid-cols-2 gap-6">
@@ -58,13 +68,8 @@ export default function ModeSelector({ onModeSelect, onBack }: ModeSelectorProps
                 Perfect for residential demolition contractors working on homes and small structures.
               </p>
 
-              <div className="mb-4">
-                <div className="text-2xl font-bold text-blue-600">
-                  ${modeConfigs.residential.pricing.price}
-                  <span className="text-sm font-normal text-gray-500">
-                    /{modeConfigs.residential.pricing.billingCycle}
-                  </span>
-                </div>
+              <div className="mb-4 bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium inline-block">
+                Included in Unlimited Access
               </div>
 
               <ul className="space-y-2">
@@ -82,7 +87,7 @@ export default function ModeSelector({ onModeSelect, onBack }: ModeSelectorProps
                 </li>
                 <li className="flex items-start">
                   <Check className="h-4 w-4 text-green-500 mt-1 mr-2 flex-shrink-0" />
-                  <span>Basic reporting and visualization</span>
+                  <span>Advanced reporting and visualization</span>
                 </li>
               </ul>
             </div>
@@ -112,13 +117,8 @@ export default function ModeSelector({ onModeSelect, onBack }: ModeSelectorProps
                 Advanced features for commercial demolition contractors working on larger projects.
               </p>
 
-              <div className="mb-4">
-                <div className="text-2xl font-bold text-blue-600">
-                  ${modeConfigs.commercial.pricing.price}
-                  <span className="text-sm font-normal text-gray-500">
-                    /{modeConfigs.commercial.pricing.billingCycle}
-                  </span>
-                </div>
+              <div className="mb-4 bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium inline-block">
+                Included in Unlimited Access
               </div>
 
               <ul className="space-y-2">
@@ -156,7 +156,7 @@ export default function ModeSelector({ onModeSelect, onBack }: ModeSelectorProps
         </CardContent>
         <CardFooter className="flex justify-between">
           {onBack && (
-            <Button variant="outline" onClick={onBack} className="flex items-center gap-1">
+            <Button variant="outline" onClick={onBack} className="flex items-center gap-1 bg-transparent">
               <ArrowLeft className="h-4 w-4" /> Back to Cover Page
             </Button>
           )}
@@ -166,7 +166,7 @@ export default function ModeSelector({ onModeSelect, onBack }: ModeSelectorProps
             className={`${onBack ? "w-auto" : "w-full max-w-xs"}`}
             size="lg"
           >
-            Continue with {selectedMode || "Selected"} Version
+            Continue with {selectedMode || "Selected"} Mode
           </Button>
         </CardFooter>
       </Card>
