@@ -7,10 +7,8 @@ import { Button } from '@/components/ui/button'
 import { Check, ArrowLeft, ExternalLink } from 'lucide-react'
 import { checkSubscriptionStatus } from '@/app/actions/stripe'
 
-// IMPORTANT: Replace this with your actual Stripe payment link
-// When creating the payment link in Stripe, set the success URL to:
-// https://v0-new-project-rsnobejhwi2.vercel.app/payment-success?session_id={CHECKOUT_SESSION_ID}
-const STRIPE_PAYMENT_LINK = "YOUR_STRIPE_PAYMENT_LINK_HERE"
+// Stripe payment link for E-Deck Estimator $499/year subscription
+const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/test_3cI4gF8gM1sHaUU000"
 
 export default function SubscribePage() {
   const router = useRouter()
