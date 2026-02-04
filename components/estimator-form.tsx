@@ -231,7 +231,22 @@ export default function EstimatorForm({ testMode, demoMode, onBackClick, mode, o
     }, 250)
   }
 
+  // Demo mode limits
+  const DEMO_MAX_LINE_ITEMS = 3
+  const DEMO_MAX_MATERIALS = 10 // Only show first 10 materials in demo
+
+  // Get limited material database for demo mode
+  const demoMaterialDatabase = demoMode 
+    ? activeMaterialDatabase.slice(0, DEMO_MAX_MATERIALS) 
+    : activeMaterialDatabase
+
   const addLineItem = () => {
+    // Limit line items in demo mode
+    if (demoMode && lineItems.length >= DEMO_MAX_LINE_ITEMS) {
+      alert(`Demo mode is limited to ${DEMO_MAX_LINE_ITEMS} line items. Subscribe for unlimited access!`)
+      return
+    }
+
     const newId = lineItems.length > 0 ? Math.max(...lineItems.map((item) => item.id)) + 1 : 1
     const rate = Number.parseFloat(hourlyRate) || 0
 
@@ -276,6 +291,12 @@ export default function EstimatorForm({ testMode, demoMode, onBackClick, mode, o
   }
 
   const addAdditionalCost = () => {
+    // Disable additional costs in demo mode
+    if (demoMode) {
+      alert("Additional costs are not available in demo mode. Subscribe for full access!")
+      return
+    }
+
     const newId = additionalCosts.length > 0 ? Math.max(...additionalCosts.map((item) => item.id)) + 1 : 1
     const rate = Number.parseFloat(hourlyRate) || 0
 
@@ -931,11 +952,24 @@ export default function EstimatorForm({ testMode, demoMode, onBackClick, mode, o
       <div className="container mx-auto px-4">
         {demoMode && (
           <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-6">
-            <p className="font-bold">Demo Mode</p>
-            <p>
-              In demo mode, you can explore the interface but cannot save or print estimates. For full functionality,
-              please contact us to purchase the full version.
-            </p>
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div>
+                <p className="font-bold text-lg">Demo Mode - Limited Access</p>
+                <ul className="text-sm mt-2 space-y-1">
+                  <li>- Maximum {DEMO_MAX_LINE_ITEMS} line items</li>
+                  <li>- {DEMO_MAX_MATERIALS} materials available (of {activeMaterialDatabase.length}+)</li>
+                  <li>- No saving or printing</li>
+                  <li>- No additional costs</li>
+                  <li>- No photo gallery</li>
+                </ul>
+              </div>
+              <a 
+                href="/subscribe" 
+                className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg text-center transition-colors whitespace-nowrap"
+              >
+                Subscribe for $499/year
+              </a>
+            </div>
           </div>
         )}
         {/* Add the OfflineStatus component to the UI, right after the buttons at the top */}
@@ -993,7 +1027,7 @@ export default function EstimatorForm({ testMode, demoMode, onBackClick, mode, o
             <Button
               variant="outline"
               onClick={handleSave}
-              className="flex items-center gap-1 no-print"
+              className="flex items-center gap-1 no-print bg-transparent"
               disabled={demoMode}
             >
               <Save className="h-4 w-4" /> Save
@@ -1002,7 +1036,7 @@ export default function EstimatorForm({ testMode, demoMode, onBackClick, mode, o
             <Button
               variant="outline"
               onClick={handlePrint}
-              className="flex items-center gap-1 no-print"
+              className="flex items-center gap-1 no-print bg-transparent"
               disabled={demoMode}
             >
               <Printer className="h-4 w-4" /> Print
@@ -1012,7 +1046,7 @@ export default function EstimatorForm({ testMode, demoMode, onBackClick, mode, o
             <Button
               variant="outline"
               onClick={clearFormData}
-              className="flex items-center gap-1 no-print"
+              className="flex items-center gap-1 no-print bg-transparent"
               disabled={demoMode}
             >
               <Trash2 className="h-4 w-4" /> Clear Form
@@ -1025,7 +1059,7 @@ export default function EstimatorForm({ testMode, demoMode, onBackClick, mode, o
             <CardTitle className="text-2xl">
               E-Deck Estimator {isCommercial ? "(Commercial)" : "(Residential)"}
             </CardTitle>
-            {onModeSwitch && (
+            {onModeSwitch && !demoMode && (
               <div className="flex items-center gap-2 mt-2">
                 <span className="text-sm text-blue-100">Switch Mode:</span>
                 <div className="flex bg-blue-700 rounded-lg p-1">
@@ -1304,7 +1338,7 @@ export default function EstimatorForm({ testMode, demoMode, onBackClick, mode, o
                                   updateLineItem={updateLineItem}
                                   removeLineItem={removeLineItem}
                                   disabled={disableInputs}
-                                  materialDatabase={activeMaterialDatabase}
+                                  materialDatabase={demoMode ? demoMaterialDatabase : activeMaterialDatabase}
                                 />
                               ))}
                             </tbody>
@@ -1317,7 +1351,7 @@ export default function EstimatorForm({ testMode, demoMode, onBackClick, mode, o
                       variant="outline"
                       size="sm"
                       onClick={addLineItem}
-                      className="mt-4 flex items-center gap-1 text-blue-600 border-blue-300 hover:bg-blue-50 no-print"
+                      className="mt-4 flex items-center gap-1 text-blue-600 border-blue-300 hover:bg-blue-50 no-print bg-transparent"
                       disabled={disableInputs}
                     >
                       <Plus className="h-4 w-4" /> Add Item
@@ -1374,7 +1408,7 @@ export default function EstimatorForm({ testMode, demoMode, onBackClick, mode, o
                       variant="outline"
                       size="sm"
                       onClick={addAdditionalCost}
-                      className="mt-4 flex items-center gap-1 text-blue-600 border-blue-300 hover:bg-blue-50 no-print"
+                      className="mt-4 flex items-center gap-1 text-blue-600 border-blue-300 hover:bg-blue-50 no-print bg-transparent"
                       disabled={disableInputs}
                     >
                       <Plus className="h-4 w-4" /> Add Additional Cost
@@ -1464,21 +1498,37 @@ export default function EstimatorForm({ testMode, demoMode, onBackClick, mode, o
                   />
                 </div>
 
-                {/* Add the PhotoGallery component here */}
-                <PhotoGallery
-                  photos={photos}
-                  onAddPhoto={handleAddPhoto}
-                  onRemovePhoto={handleRemovePhoto}
-                  onUpdatePhotoDescription={handleUpdatePhotoDescription}
-                  disabled={disableInputs}
-                />
+                {/* Photo Gallery - Hidden in Demo Mode */}
+                {!demoMode && (
+                  <PhotoGallery
+                    photos={photos}
+                    onAddPhoto={handleAddPhoto}
+                    onRemovePhoto={handleRemovePhoto}
+                    onUpdatePhotoDescription={handleUpdatePhotoDescription}
+                    disabled={disableInputs}
+                  />
+                )}
+                {demoMode && (
+                  <div className="bg-gray-100 border border-gray-300 rounded-lg p-6 mb-6 text-center">
+                    <p className="text-gray-500 font-medium">Photo Gallery - Available with subscription</p>
+                    <a href="/subscribe" className="text-blue-600 underline text-sm">Upgrade to access</a>
+                  </div>
+                )}
 
-                {/* Add the SimpleChart component here */}
-                <SimpleChart
-                  lineItems={lineItems}
-                  additionalCosts={additionalCosts}
-                  materialDatabase={activeMaterialDatabase}
-                />
+                {/* Chart - Hidden in Demo Mode */}
+                {!demoMode && (
+                  <SimpleChart
+                    lineItems={lineItems}
+                    additionalCosts={additionalCosts}
+                    materialDatabase={activeMaterialDatabase}
+                  />
+                )}
+                {demoMode && (
+                  <div className="bg-gray-100 border border-gray-300 rounded-lg p-6 mb-6 text-center">
+                    <p className="text-gray-500 font-medium">Cost Breakdown Chart - Available with subscription</p>
+                    <a href="/subscribe" className="text-blue-600 underline text-sm">Upgrade to access</a>
+                  </div>
+                )}
                 {/* Add this after the SimpleChart component */}
                 {/* We can add the DataDebugger component here if needed 
               <DataDebugger

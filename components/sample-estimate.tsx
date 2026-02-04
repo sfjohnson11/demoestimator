@@ -8,7 +8,7 @@ export default function SampleEstimate({ isCommercial = false }: SampleEstimateP
       <div className="text-center mb-4">
         <h2 className="font-bold text-lg">{isCommercial ? "COMMERCIAL" : "RESIDENTIAL"} DEMOLITION ESTIMATE</h2>
         <p>Project: {isCommercial ? "Office Building Renovation" : "Residential Kitchen Renovation"}</p>
-        <p>Date: 03/03/2025</p>
+        <p>Date: 03/03/2026</p>
       </div>
 
       <table className="w-full border-collapse mb-4">
