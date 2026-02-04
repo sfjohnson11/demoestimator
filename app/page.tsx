@@ -8,6 +8,7 @@ import ModeSelector from "@/components/mode-selector"
 import { AppProvider, useApp } from "@/contexts/app-context"
 import type { EstimatorMode } from "@/types/app-config"
 import CategoryReference from "@/components/category-reference"
+import LogoutButton from "@/components/logout-button"
 
 function AppContent() {
   const { mode, setMode } = useApp()
@@ -68,6 +69,10 @@ function AppContent() {
 
   return (
     <main className="min-h-screen bg-white">
+      {/* Logout button in top-right corner */}
+      <div className="fixed top-4 right-4 z-50">
+        <LogoutButton />
+      </div>
       {testMode && <TestModeBanner />}
 
       {!showEstimator ? (
