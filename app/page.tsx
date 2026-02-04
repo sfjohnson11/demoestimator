@@ -57,6 +57,8 @@ function AppContent() {
   const handleDemoClick = () => {
     setShowEstimator(true)
     setDemoMode(true)
+    setShowModeSelector(false) // Skip mode selector in demo
+    setMode("residential") // Default to residential in demo
   }
 
   const handleTestModeClick = () => {
