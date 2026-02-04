@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Check, ArrowLeft, ExternalLink } from 'lucide-react'
 import { checkSubscriptionStatus } from '@/app/actions/stripe'
 
-// Stripe payment link for E-Deck Estimator $499/year subscription
+// Live Stripe payment link for E-Deck Estimator $499/year subscription
 const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/5kQ4gzfp0g6BebefnW6J31y"
 
 export default function SubscribePage() {
