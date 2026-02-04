@@ -8,7 +8,7 @@ import { Check, ArrowLeft, ExternalLink } from 'lucide-react'
 import { checkSubscriptionStatus } from '@/app/actions/stripe'
 
 // Stripe payment link for E-Deck Estimator $499/year subscription
-const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/test_3cI4gF8gM1sHaUU000"
+const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/5kQ4gzfp0g6BebefnW6J31y"
 
 export default function SubscribePage() {
   const router = useRouter()
