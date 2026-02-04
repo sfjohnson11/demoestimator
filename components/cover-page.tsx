@@ -103,7 +103,7 @@ export default function CoverPage({ isCommercial = false }: CoverPageProps) {
 
       {/* Copyright notice and disclaimer */}
       <div className="mt-auto pt-8 text-center text-sm text-blue-200">
-        <p>© 2025 E-Deck Estimator by S F Johnson Enterprises, LLC. All rights reserved.</p>
+        <p>© 2026 E-Deck Estimator by S F Johnson Enterprises, LLC. All rights reserved.</p>
         <p className="mt-2">Unauthorized use or reproduction of this software is strictly prohibited.</p>
       </div>
     </div>
