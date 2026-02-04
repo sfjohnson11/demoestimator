@@ -26,16 +26,21 @@ function AppContent() {
   useEffect(() => {
     async function checkAccess() {
       try {
-        const { hasAccess, status } = await checkSubscriptionStatus()
-        setHasSubscription(hasAccess)
+        console.log("[v0] Checking subscription status...")
+        const result = await checkSubscriptionStatus()
+        console.log("[v0] Subscription check result:", result)
+        setHasSubscription(result.hasAccess)
         
         // If not logged in, redirect to login
-        if (status === 'not_logged_in') {
+        if (result.status === 'not_logged_in') {
+          console.log("[v0] User not logged in, redirecting to login")
           router.push('/auth/login')
           return
         }
       } catch (error) {
-        console.error('Error checking subscription:', error)
+        console.error('[v0] Error checking subscription:', error)
+        // On error, redirect to login as fallback
+        router.push('/auth/login')
       } finally {
         setIsCheckingSubscription(false)
       }
