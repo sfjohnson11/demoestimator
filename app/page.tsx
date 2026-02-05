@@ -22,23 +22,25 @@ function AppContent() {
   const [showCategoryReference, setShowCategoryReference] = useState(false)
   const [hasSubscription, setHasSubscription] = useState(false)
   const [isCheckingSubscription, setIsCheckingSubscription] = useState(true)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   useEffect(() => {
     async function checkAccess() {
       try {
         const result = await checkSubscriptionStatus()
-        setHasSubscription(result.hasAccess)
         
-        // Only redirect to login if not logged in
         if (result.status === 'not_logged_in') {
-          router.push('/auth/login')
+          setIsLoggedIn(false)
+          setHasSubscription(false)
+          setIsCheckingSubscription(false)
           return
         }
-        // For all other statuses (no_profile, trial, expired, error), 
-        // show the subscription required screen
+        
+        setIsLoggedIn(true)
+        setHasSubscription(result.hasAccess)
       } catch (error) {
         console.error('Error checking subscription:', error)
-        // On error, show subscription screen (not login)
+        setIsLoggedIn(false)
         setHasSubscription(false)
       } finally {
         setIsCheckingSubscription(false)
@@ -97,8 +99,40 @@ function AppContent() {
     )
   }
 
-  // If user doesn't have subscription, redirect to subscribe page
-  if (!hasSubscription && !testMode && !demoMode) {
+  // If user is NOT logged in, force them to login
+  if (!isLoggedIn && !testMode && !demoMode) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-blue-900 via-blue-700 to-blue-500 p-4">
+        <div className="text-center text-white max-w-md">
+          <h1 className="text-3xl font-bold mb-4">E-Deck Estimator</h1>
+          <p className="mb-6">Please log in or create an account to continue.</p>
+          <div className="space-y-3">
+            <button
+              onClick={() => router.push('/auth/login')}
+              className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition-colors"
+            >
+              Log In
+            </button>
+            <button
+              onClick={() => router.push('/auth/sign-up')}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-colors"
+            >
+              Create Account
+            </button>
+            <button
+              onClick={handleDemoClick}
+              className="w-full bg-transparent border border-white/50 hover:bg-white/10 text-white font-bold py-3 px-6 rounded-lg transition-colors"
+            >
+              Try Demo Mode
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // If user is logged in but doesn't have subscription, show subscribe page
+  if (isLoggedIn && !hasSubscription && !testMode && !demoMode) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-blue-900 via-blue-700 to-blue-500 p-4">
         <div className="text-center text-white max-w-md">
